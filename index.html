@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html data-theme="emerald" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>minibit</title>
+    <link href="input.css" rel="stylesheet" />
+    <link href="/dist/output.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="flex justify-between items-center">
+        <h1 class="text-4xl font-bold pt-16 pb-24">Your tasks</h1>
+        <div
+          onclick="add_modal.showModal()"
+          class="flex items-center p-2 mb-4 cursor-pointer rounded-full hover:bg-neutral duration-100"
+        >
+          <span class="material-icons"> add </span>
+          <h3 class="text-xl">ADD</h3>
+        </div>
+      </header>
+      <dialog id="my_modal" class="modal">
+        <div class="modal-box w-11/12 max-w-3xl">
+          <h3 id="task_name" class="font-bold text-lg mb-4"></h3>
+          <p id="task_text" class="py-4"></p>
+          <div class="modal-action">
+            <form method="dialog">
+              <button class="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      <dialog id="add_modal" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+          <form class="flex flex-wrap justify-between" action="">
+            <input
+            
+              type="text"
+              placeholder="Title"
+              class="input w-full input-bordered border-b mb-8 "
+            />
+            <input
+              type="text"
+              placeholder="The problem"
+              class="input w-full input-bordered border-b mb-8 "
+            />
+            <input
+              type="text"
+              placeholder="Type"
+              class="input w-full input-bordered border-b mb-8 "
+            />
+            <input
+              type="text"
+              placeholder="Deadline"
+              class="input w-full input-bordered border-b mb-8 "
+            />
+          </form>
+          <div class="modal-action">
+            <form method="dialog">
+              <button class="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      <div class="table">
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr id="thead"></tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>

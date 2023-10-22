@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+th {
+  text-transform: uppercase;
+}
+tr {
+    position: relative;
+}
+tr .completed::before {
+  content: "";
+  background-color: rgba(0, 3, 17, 0.75);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+html[data-theme="emerald"] .material-icons {
+  color: #fff;
+}
+/* tailwind 900 */
+.priority_high {
+  background-color: #881337;
+  border-radius: 6px;
+  padding: 3px;
+}
+.emoji_emotions {
+  background-color: #14532d;
+  border-radius: 6px;
+  padding: 3px;
+}
+.modal {
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 4, 22, 0.5);
+}

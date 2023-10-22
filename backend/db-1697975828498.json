@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Przykładowe zadanie 1",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Przykładowe zadanie 2",
+      "completed": true
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith"
+    }
+  ],
+  "customEndpoint": [
+    {
+      "id": 1,
+      "description": "Przykładowy opis"
+    }
+  ],
+  "comments": []
+}
