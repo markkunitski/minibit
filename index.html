@@ -37,45 +37,64 @@
       </dialog>
       <dialog id="add_modal" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">
-          <form class="flex flex-wrap justify-between" action="">
+          <form method="dialog">
+            <button
+              class="btn btn-sm btn-circle btn-ghost absolute right-0 top-0"
+            >
+              ✕
+            </button>
+          </form>
+          <form id="form_add" class="flex flex-wrap justify-end">
             <input
-            
+              required
+              name="title"
               type="text"
               placeholder="Title"
-              class="input w-full input-bordered border-b mb-8 "
+              class="input w-full input-bordered border-b mb-4"
             />
             <input
+              required
+              name="task"
               type="text"
               placeholder="The problem"
-              class="input w-full input-bordered border-b mb-8 "
+              class="input w-full input-bordered border-b mb-4"
             />
+            <select
+              name="priority"
+              required
+              class="select select-bordered w-full mb-4"
+            >
+              <option disabled selected>Priority</option>
+              <option value="priority_high">Very high</option>
+              <option value="whatshot">High</option>
+              <option value="warning">Medium</option>
+              <option value="emoji_emotions">Low</option>
+            </select>
             <input
-              type="text"
-              placeholder="Type"
-              class="input w-full input-bordered border-b mb-8 "
-            />
-            <input
-              type="text"
+              name="deadline"
+              required
+              type="date"
               placeholder="Deadline"
-              class="input w-full input-bordered border-b mb-8 "
+              class="input w-full input-bordered border-b mb-4"
             />
+            <button type="submit" class="btn">Add</button>
           </form>
-          <div class="modal-action">
-            <form method="dialog">
-              <button class="btn">Close</button>
-            </form>
-          </div>
         </div>
       </dialog>
       <div class="table">
-        <div class="overflow-x-auto">
-          <table class="table">
-            <thead>
-              <tr id="thead"></tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
+        <table id="main_table" class="table">
+          <thead>
+            <tr id="thead"></tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+
+        <button id="complete_button" class="btn btn-primary hidden mt-20 me-6">
+          complete
+        </button>
+        <button id="delete_button" class="btn btn-accent hidden mt-20">
+          delete
+        </button>
       </div>
     </div>
 

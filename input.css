@@ -6,15 +6,15 @@ th {
   text-transform: uppercase;
 }
 tr {
-    position: relative;
+  position: relative;
 }
 tr .completed::before {
   content: "";
-  background-color: rgba(0, 3, 17, 0.75);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 10;
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: -1px;
+  bottom: -1px;
   left: 0;
   right: 0;
 }
@@ -22,15 +22,22 @@ html[data-theme="emerald"] .material-icons {
   color: #fff;
 }
 /* tailwind 900 */
-.priority_high {
-  background-color: #881337;
+.priority_icon {
   border-radius: 6px;
   padding: 3px;
+  font-size: 20px;
+}
+.priority_high {
+  background-color: #881337;
 }
 .emoji_emotions {
   background-color: #14532d;
-  border-radius: 6px;
-  padding: 3px;
+}
+.whatshot {
+  background-color: #7c2d12;
+}
+.warning {
+  background-color: #854d0e;
 }
 .modal {
   backdrop-filter: blur(4px);
