@@ -3,6 +3,11 @@ if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 } else {
   document.documentElement.dataset.theme = "emerald";
 }
+// alert close
+alert_close.addEventListener("click", function () {
+  myalert.style.display = "none";
+});
+
 class TimerCalculator {
   constructor(seconds) {
     this.seconds = seconds;
@@ -19,6 +24,7 @@ class TimerCalculator {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   }
 }
+
 class Modal {
   constructor(title, text) {
     (this.text = text), (this.title = title);
@@ -29,6 +35,7 @@ class Modal {
     my_modal.showModal();
   }
 }
+
 class Fetched {
   getData() {
     return new Promise((resolve, reject) => {
@@ -48,6 +55,35 @@ class Fetched {
     });
   }
 }
+
+class CookieHandler {
+  static getCookie(name) {
+    const cookieArray = document.cookie.split("; ");
+    const cookie = cookieArray.find((row) => row.startsWith(`${name}=`));
+    if (cookie) {
+      return cookie.split("=")[1];
+    }
+    return null;
+  }
+
+  static setCookie(name, value, expiryDays = 365) {
+    const date = new Date();
+    date.setTime(date.getTime() + expiryDays * 24 * 60 * 60 * 1000);
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+  }
+
+  static parseCookies() {
+    const cookies = {};
+    const cookieArray = document.cookie.split("; ");
+    cookieArray.forEach((cookie) => {
+      const [name, value] = cookie.split("=");
+      cookies[name] = value;
+    });
+    return cookies;
+  }
+}
+
 class Task {
   constructor(id, title, timer, priority, deadline, completed, task) {
     this.id = id;
@@ -72,19 +108,76 @@ class Task {
     };
     xhr.send();
   }
+
   startTimer(htmlElem) {
-    let initial = Date.now();
+    console.log(htmlElem);
+    let active_timers = CookieHandler.getCookie(`active_timers`);
+    if (active_timers) {
+      active_timers = JSON.parse(active_timers);
+    } else {
+      active_timers = [];
+    }
     
-    let interval = setInterval(() => {
-      this.timer++; // Increment the timer
-  
-      const timerCalculator = new TimerCalculator(this.timer); // Create a new TimerCalculator object with the updated timer
-      const properTime = timerCalculator.calcTimer(); // Calculate the proper time
-  
-      console.log(this.timer);
-      console.log(properTime);
-      htmlElem.innerText = properTime; // Update the HTML element with the proper time
-    }, 1000);
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval); // Clear the existing interval
+      this.timerInterval = null;
+      if (active_timers.includes(this.id)) active_timers.splice(active_timers.indexOf(this.id), 1);
+      CookieHandler.setCookie(`timerStart_${this.id}`, 0, -1);
+      CookieHandler.setCookie(`active_timers`, JSON.stringify(active_timers));
+
+      this.saveTimer();
+    } else {
+      this.timerInterval = setInterval(() => {
+        this.timer++;
+        const timerCalculator = new TimerCalculator(this.timer);
+        const properTime = timerCalculator.calcTimer();
+        htmlElem.lastElementChild.textContent = properTime;
+      }, 1000);
+      
+      if (!active_timers.includes(this.id)) active_timers.push(this.id);
+      
+      CookieHandler.setCookie(`timerStart_${this.id}`, Date.now());
+      CookieHandler.setCookie(`active_timers`, JSON.stringify(active_timers));
+    }
+
+    
+  }
+
+  // loadTimer() {
+  //   const cookies = CookieHandler.parseCookies();
+  //   const timerStart = cookies["timerStart"];
+  //   const activeButtons = cookies["activeButtons"];
+  //   if (timerStart) {
+  //     const elapsedSeconds = Math.floor(
+  //       (Date.now() - Number(timerStart)) / 1000
+  //     );
+  //     this.timer = elapsedSeconds;
+
+  //     if (activeButtons) {
+  //       const activeButtonIds = activeButtons.split(",");
+  //       activeButtonIds.forEach((id) => {
+  //         const button = document.getElementById(`timer_btn_${id}`);
+  //         if (button) {
+  //           const task = taskMap.get(button.closest("tr"));
+  //           if (task) {
+  //             task.startTimer(button.closest(".timer_btn"));
+  //           }
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
+
+  saveTimer() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("PUT", `http://localhost:3000/tasks/${this.id}`, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function () {
+      if (this.status != 200) {
+        throw new Error("Error while saving timer");
+      }
+    };
+    xhr.send(JSON.stringify(this));
   }
   completeTask() {
     this.completed = true;
@@ -153,13 +246,15 @@ class fetchAndAdd {
                   contentNode.innerHTML =
                     key === "title"
                       ? `<div class='flex items-center'>
-                    <button class="btn btn-neutral btn-xs me-2 timer_btn">
+                    <button id="timer_btn_${
+                      obj.id
+                    }" class="btn btn-neutral btn-xs me-2 timer_btn">
                   <span class="material-icons text-sm">
                   play_arrow
                   </span>
-                  
+                  <p>
                   ${timer.calcTimer()}
-                  
+                  </p>
                   </button>
                   ${obj[key]}
                   </div>
@@ -286,13 +381,51 @@ function listenerCheckboxes(event) {
   this.removeEventListener("input", listenerCheckboxes);
 }
 function listenerTimers(event) {
-  if (event.target.classList.contains("timer_btn")) {
+  if (
+    event.target.classList.contains("timer_btn") ||
+    event.target.closest(".timer_btn")
+  ) {
     const row = event.target.closest("tr");
     if (taskMap.has(row)) {
       const task = taskMap.get(row);
-      task.startTimer(event.target);
+      task.startTimer(event.target.closest(".timer_btn"));
     }
   }
 }
 main_table.addEventListener("input", listenerCheckboxes);
 main_table.addEventListener("click", listenerTimers);
+window.addEventListener("beforeunload", () => {
+  taskMap.forEach((task) => {
+    task.saveTimer();
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const cookies = CookieHandler.parseCookies();
+    let active_timers = CookieHandler.getCookie(`active_timers`);
+    if (active_timers) {
+      active_timers = JSON.parse(active_timers);
+    } else {
+      active_timers = [];
+    }
+
+    // const activeButtons = cookies["activeButtons"];
+
+    if (active_timers) {
+      const currentTime = Date.now();
+
+      taskMap.forEach((task) => {
+        if (active_timers.includes(task.id)) {
+          console.log(1);
+          const timerStart = cookies[`timerStart_${task.id}`];
+          const timerStartTime = Number(timerStart);
+          const elapsedTime = currentTime - timerStartTime;
+          const elapsedSeconds = Math.floor(elapsedTime / 1000);
+          task.timer += elapsedSeconds;
+          task.startTimer(document.getElementById(`timer_btn_${task.id}`));
+        }
+      });
+    }
+  }, 250);
+});
