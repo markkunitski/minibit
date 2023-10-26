@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.3.3 | MIT License | https://tailwindcss.com
+! tailwindcss v3.3.5 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -7839,20 +7839,12 @@ details.collapse summary::-webkit-details-marker {
   inset: -0.25rem;
 }
 
-.bottom-1 {
-  bottom: 0.25rem;
-}
-
 .right-0 {
   right: 0px;
 }
 
 .top-0 {
   top: 0px;
-}
-
-.bottom-10 {
-  bottom: 2.5rem;
 }
 
 .top-\[45vh\] {
@@ -7895,23 +7887,16 @@ details.collapse summary::-webkit-details-marker {
   clear: none;
 }
 
-.mx-10 {
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-}
-
 .mb-4 {
   margin-bottom: 1rem;
 }
 
 .me-2 {
-  -webkit-margin-end: 0.5rem;
-          margin-inline-end: 0.5rem;
+  margin-inline-end: 0.5rem;
 }
 
 .me-6 {
-  -webkit-margin-end: 1.5rem;
-          margin-inline-end: 1.5rem;
+  margin-inline-end: 1.5rem;
 }
 
 .mt-2 {
@@ -8035,10 +8020,6 @@ details.collapse summary::-webkit-details-marker {
 
 .max-w-5xl {
   max-width: 64rem;
-}
-
-.max-w-lg {
-  max-width: 32rem;
 }
 
 .flex-shrink {
