@@ -176,7 +176,7 @@ class fetchAndAdd {
       data
         .getData()
         .then((data) => {
-          data.forEach((obj, index) => {
+          data.tasks.forEach((obj, index) => {
             const task = new Task(
               obj.id,
               obj.title,
@@ -318,7 +318,7 @@ form_add.addEventListener("submit", async function (event) {
   const taskData = { timer: "0", completed: "false" };
   myform.forEach((elem, index) => {
     taskData[index] = elem;
-  });
+  }); 
   if (Object.keys(taskData).length) {
     const response = await fetch("backend/db.json", {
       method: "POST",
