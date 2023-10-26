@@ -40,7 +40,7 @@ class Fetched {
   getData() {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
-      xhr.open("GET", "/tasks", true);
+      xhr.open("GET", "backend/db.json", true);
       xhr.onload = function () {
         if (this.status == 200) {
           resolve(JSON.parse(this.responseText));
@@ -100,7 +100,7 @@ class Task {
   }
   removeTask() {
     let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", `/tasks/${this.id}`, true);
+    xhr.open("DELETE", `backend/db.json/${this.id}`, true);
     xhr.onload = function () {
       if (this.status != 200) {
         throw new Error("Error while removing task");
@@ -144,7 +144,7 @@ class Task {
   }
   saveTimer() {
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", `/tasks/${this.id}`, true);
+    xhr.open("PUT", `backend/db.json/${this.id}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function () {
       if (this.status != 200) {
@@ -156,7 +156,7 @@ class Task {
   completeTask() {
     this.completed = true;
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", `/tasks/${this.id}`, true);
+    xhr.open("PUT", `backend/db.json/${this.id}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function () {
       if (this.status != 200) {
@@ -320,7 +320,7 @@ form_add.addEventListener("submit", async function (event) {
     taskData[index] = elem;
   });
   if (Object.keys(taskData).length) {
-    const response = await fetch("/tasks", {
+    const response = await fetch("backend/db.json", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
