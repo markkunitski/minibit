@@ -40,7 +40,7 @@ class Fetched {
   getData() {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
-      xhr.open("GET", "http://localhost:3000/tasks", true);
+      xhr.open("GET", "/tasks", true);
       xhr.onload = function () {
         if (this.status == 200) {
           resolve(JSON.parse(this.responseText));
@@ -100,7 +100,7 @@ class Task {
   }
   removeTask() {
     let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", `http://localhost:3000/tasks/${this.id}`, true);
+    xhr.open("DELETE", `/tasks/${this.id}`, true);
     xhr.onload = function () {
       if (this.status != 200) {
         throw new Error("Error while removing task");
@@ -142,35 +142,9 @@ class Task {
 
     
   }
-
-  // loadTimer() {
-  //   const cookies = CookieHandler.parseCookies();
-  //   const timerStart = cookies["timerStart"];
-  //   const activeButtons = cookies["activeButtons"];
-  //   if (timerStart) {
-  //     const elapsedSeconds = Math.floor(
-  //       (Date.now() - Number(timerStart)) / 1000
-  //     );
-  //     this.timer = elapsedSeconds;
-
-  //     if (activeButtons) {
-  //       const activeButtonIds = activeButtons.split(",");
-  //       activeButtonIds.forEach((id) => {
-  //         const button = document.getElementById(`timer_btn_${id}`);
-  //         if (button) {
-  //           const task = taskMap.get(button.closest("tr"));
-  //           if (task) {
-  //             task.startTimer(button.closest(".timer_btn"));
-  //           }
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
   saveTimer() {
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", `http://localhost:3000/tasks/${this.id}`, true);
+    xhr.open("PUT", `/tasks/${this.id}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function () {
       if (this.status != 200) {
@@ -182,7 +156,7 @@ class Task {
   completeTask() {
     this.completed = true;
     let xhr = new XMLHttpRequest();
-    xhr.open("PUT", `http://localhost:3000/tasks/${this.id}`, true);
+    xhr.open("PUT", `/tasks/${this.id}`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function () {
       if (this.status != 200) {
@@ -346,7 +320,7 @@ form_add.addEventListener("submit", async function (event) {
     taskData[index] = elem;
   });
   if (Object.keys(taskData).length) {
-    const response = await fetch("http://localhost:3000/tasks", {
+    const response = await fetch("/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
